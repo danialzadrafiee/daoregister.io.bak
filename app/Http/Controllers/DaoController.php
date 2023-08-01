@@ -26,6 +26,31 @@ class DaoController extends Controller
 
     public function store(Request $request)
     {
-        return $request;
+        // Validate the request
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:100',
+            'symbol' => 'required|string|max:3',
+            'describe' => 'required|string|max:300',
+            'feautures' => 'required|array',
+            'feautures.*' => 'string', // Validate each feature in the array
+            'members' => 'required|array',
+            'members.*.email' => 'required|email', // Validate each member's email
+            'members.*.role' => 'required|string', // Validate each member's role
+            'members.*.share' => 'required|string', // Validate each member's share
+        ]);
+
+        // Store the data in the database (assuming you have a Dao model)
+        $dao = new Dao();
+        $dao->name = $validatedData['name'];
+        $dao->symbol = $validatedData['symbol'];
+        $dao->describe = $validatedData['describe'];
+        $dao->feautures = json_encode($validatedData['feautures']); // Store as a JSON string
+
+        return $dao;
+        // $dao->save();
+
+
+        // Return a response
+        // return response()->json(['message' => 'Data saved successfully!']);
     }
 }

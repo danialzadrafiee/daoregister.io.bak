@@ -8,7 +8,7 @@ import TextArea from "@/components/TextArea";
 import cn from "classnames";
 import Icon from "@/components/Icon";
 import Dropdown from "@/components/Dropdown";
-
+import { router } from "@inertiajs/react";
 //FilePond
 import { FilePond, registerPlugin } from "react-filepond";
 import "filepond/dist/filepond.min.css";
@@ -67,15 +67,24 @@ const CreateDao = ({ className }) => {
             [name]: value,
         }));
     };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const transformedMembers = transformData(inputFields);
-        console.log(schema.validate(formData));
-        console.log(
-            "Serialized Data:",
-            JSON.stringify({ ...formData, ...transformedMembers })
-        );
+        const dataToSend = { ...formData, ...transformedMembers };
+
+        router.post(route("dao.store"), dataToSend, {
+            onSuccess: (page) => {
+                console.log("Data saved successfully!");
+                // You can handle other logic here, like redirecting or showing a success message
+            },
+            onError: (errors) => {
+                console.error("Error sending data:", errors);
+                // Handle the errors, perhaps by setting them in the component's state and displaying them
+            },
+        });
     };
+
     const handleDropdownChange = (index, value) => {
         const values = [...inputFields];
         values[index].role = value;
