@@ -1,0 +1,37 @@
+@import @/styles/helpers
+
+.tooltip
+    display: inline-block
+    width: max-content
+    margin-left: 4px
+    margin-bottom: -4px
+    cursor: pointer
+    .tooltipWpapper
+        padding: 3px 12px
+        border-radius: 4px
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), inset 0px 0px 1px #000000
+        font-size: 12px
+        font-weight: 600
+
+.tooltip::before
+    transition: opacity 0.2s
+    content: attr(data-tip)
+    font-size: 10px
+    font-weight: bold
+    bottom: 18px
+    left: 0px
+    padding: 3px 12px
+    position: absolute
+    white-space: nowrap
+    background: $n5
+    border-radius: 4px
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1), inset 0px 0px 1px #000000
+    font-size: 0px
+    opacity: 0
+    font-weight: 600
+
+.tooltip:hover::before
+    opacity: 1
+    font-size: 12px
+
+    /* bottom: -35px */
