@@ -71,4 +71,13 @@ class User extends Authenticatable
     {
         return $this->user_type == 'individual' ? $this->first_name . ' ' . $this->last_name : $this->corp_name;
     }
+
+
+    //DAOREGISTER.IO
+    public function daos()
+    {
+        return $this->belongsToMany(Dao::class, 'dao_user')
+            ->withPivot('email', 'role', 'share')
+            ->withTimestamps();
+    }
 }

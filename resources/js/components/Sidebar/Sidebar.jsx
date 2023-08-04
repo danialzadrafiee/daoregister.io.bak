@@ -115,7 +115,7 @@ const Sidebar = ({ className, onClose }) => {
                             </Link>
                         ) : (
                             <Dropdown
-                                className={styles.dropdown}
+                                className={cn(styles.dropdown)}
                                 visibleSidebar={visible}
                                 setValue={setVisible}
                                 key={index}
@@ -141,7 +141,7 @@ const Sidebar = ({ className, onClose }) => {
                         Help & getting started
                         <div className={styles.counter}>8</div>
                     </button>
-                    <Theme className={styles.theme} visibleSidebar={visible} />
+                    {/* <Theme className={styles.theme} visibleSidebar={visible} /> */}
                 </div>
             </div>
             <Help

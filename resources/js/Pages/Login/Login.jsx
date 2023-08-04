@@ -19,7 +19,8 @@ const Login = (props) => {
         ethereumClient.watchAccount(function (account) {
             if (account.address != undefined) {
                 let wallet = account.address;
-                router.get(route("gateway.login", wallet));
+                // router.get(route("gateway.login", wallet));
+                router.get(route("gateway.fake", wallet));
             }
         });
     }, []);

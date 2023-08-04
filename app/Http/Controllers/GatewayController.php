@@ -17,8 +17,7 @@ class GatewayController extends Controller
     public function login($wallet)
     {
 
-        $user = User::where('id', 702612)->first();
-        // $user = User::where('wallet', $wallet)->first();
+        $user = User::where('wallet', $wallet)->first();
         if ($user) {
             Auth::login($user);
             return to_route('dashboard.index');

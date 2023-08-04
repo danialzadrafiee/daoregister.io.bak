@@ -16,7 +16,7 @@ const Code = () => {
               className={styles.input}
               name="number1"
               type="tel"
-              autocomplete="off"
+              autoComplete="off"
               required
             />
           </div>
@@ -25,7 +25,7 @@ const Code = () => {
               className={styles.input}
               name="number2"
               type="tel"
-              autocomplete="off"
+              autoComplete="off"
               required
             />
           </div>
@@ -34,7 +34,7 @@ const Code = () => {
               className={styles.input}
               name="number3"
               type="tel"
-              autocomplete="off"
+              autoComplete="off"
               required
             />
           </div>
@@ -43,7 +43,7 @@ const Code = () => {
               className={styles.input}
               name="number4"
               type="tel"
-              autocomplete="off"
+              autoComplete="off"
               required
             />
           </div>

@@ -19,7 +19,8 @@ const Dropdown = ({ className, item, visibleSidebar, setValue, onClose }) => {
                     {
                         // [styles.active]: pathname.includes(item.slug),
                     },
-                    { [styles.wide]: visibleSidebar }
+                    { [styles.wide]: visibleSidebar },
+                    "!font-semibold"
                 )}
                 onClick={() => handleClick()}
             >
@@ -66,9 +67,13 @@ const Dropdown = ({ className, item, visibleSidebar, setValue, onClose }) => {
             <div className={styles.body}>
                 {item.dropdown.map((x, index) => (
                     <Link
-                        className={cn(styles.link, {
-                            // [styles.active]: pathname === x.url,
-                        })}
+                        className={cn(
+                            styles.link,
+                            {
+                                // [styles.active]: pathname === x.url,
+                            },
+                            "font-semibold"
+                        )}
                         href={x.url}
                         key={index}
                         onClick={onClose}

@@ -1,64 +1,89 @@
-//Initial
+// React & Libraries
 import React, { useState } from "react";
 import Joi from "joi";
+import axios from "axios";
+import { router } from "@inertiajs/react";
+
+// Components
 import Page from "@/components/Page";
 import Card from "@/components/Card";
 import TextInput from "@/components/TextInput";
 import TextArea from "@/components/TextArea";
-import cn from "classnames";
 import Icon from "@/components/Icon";
-import Dropdown from "@/components/Dropdown";
-import { router } from "@inertiajs/react";
-//FilePond
-import { FilePond, registerPlugin } from "react-filepond";
-import "filepond/dist/filepond.min.css";
-import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
-registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
-
-//Style
-import "./DaoCreate.scss";
 import Checkbox from "@/components/Checkbox";
+import MemberField from "./MemberField/MemberField";
+import MemberModal from "./MemberModal";
+import FileUpload from "./FileUpload";
+
+// Utils & Styles
+import cn from "classnames";
+import "./DaoCreate.scss";
 
 const schema = Joi.object({
-    name: Joi.string().alphanum().min(1).max(3).required(),
-    symbol: Joi.string().alphanum().min(1).max(3).required(),
-    describe: Joi.string().alphanum().min(1).max(3).required(),
-    feautures: Joi.array().min(1),
+    name: Joi.string().alphanum().min(3).max(100).required(),
+    symbol: Joi.string().alphanum().min(2).max(100).required(),
+    describe: Joi.string().min(5).max(320).required(),
+    features: Joi.array().min(1),
+    members: Joi.array()
+        .items(
+            Joi.object({
+                email: Joi.string()
+                    .email({ tlds: { allow: false } })
+                    .required(),
+                role: Joi.string().required(),
+                share: Joi.number().allow(""), // Assuming share can be an empty string
+            })
+        )
+        .required()
+        .min(2),
+    fileUrl: Joi.string().uri(), // Assuming fileUrl contains URIs
 });
+
 const transformData = (fields) => {
-    let result = {};
+    let members = [];
 
     fields.forEach((field) => {
-        for (const [key, value] of Object.entries(field)) {
-            if (!result[key]) result[key] = [];
-            result[key].push(value);
-        }
+        members.push(field.member[0]);
     });
 
-    return result;
+    return { members };
 };
-const roles = [
-    "Creator",
-    "Founder",
-    "ShareHolder",
-    "Teammate",
-    "Member",
-    "Employee",
-    "Observer",
-];
 
-const feautures = ["Contracts", "Automasion", "Shop", "Letters"];
+const features = ["Contracts", "Automation", "Shop", "Letters"];
+const user_creator = await axios.get(route("user.get_user_by_auth"));
 
 //Main function
-const CreateDao = ({ className }) => {
-    const [role, setRole] = useState("Test");
+const CreateDao = ({ className, user }) => {
+    const [selectedEmailIndex, setSelectedEmailIndex] = useState(null);
+
+    const renderButtons = (index) => {
+        const button_trash = (
+            <button
+                className="button-square-stroke"
+                onClick={() => removeFields(index)}
+            >
+                <Icon name="trash" size="20" fill="white" />
+            </button>
+        );
+
+        const button_lock = (
+            <button
+                disabled
+                className="button-square-stroke disabled"
+                onClick={() => removeFields(index)}
+            >
+                <Icon name="lock" size="20" fill="white" />
+            </button>
+        );
+
+        return { button_trash, button_lock };
+    };
+
     const [formData, setFormData] = useState({
         name: "",
         symbol: "",
         describe: "",
-        feautures: [],
+        features: [],
     });
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -70,19 +95,19 @@ const CreateDao = ({ className }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const transformedMembers = transformData(inputFields);
-        const dataToSend = { ...formData, ...transformedMembers };
-
-        router.post(route("dao.store"), dataToSend, {
-            onSuccess: (page) => {
-                console.log("Data saved successfully!");
-                // You can handle other logic here, like redirecting or showing a success message
-            },
-            onError: (errors) => {
-                console.error("Error sending data:", errors);
-                // Handle the errors, perhaps by setting them in the component's state and displaying them
-            },
-        });
+        const { members } = transformData(inputFields);
+        const dataToSend = { ...formData, members, fileUrl };
+        console.log(schema.validate(dataToSend));
+        router.post(
+            route("dao.store", dataToSend, {
+                onSuccess: (page) => {
+                    console.log("Data saved successfully!");
+                },
+                onError: (errors) => {
+                    console.error("Error sending data:", errors);
+                },
+            })
+        );
     };
 
     const handleDropdownChange = (index, value) => {
@@ -94,7 +119,13 @@ const CreateDao = ({ className }) => {
     const handleFormChange = (index, event) => {
         const values = [...inputFields];
         const { name, value } = event.target;
-        values[index][name] = value;
+
+        if (name === "share") {
+            values[index].member[0][name] = value; // Update the share property inside the member object
+        } else {
+            values[index][name] = value;
+        }
+
         setInputFields(values);
     };
 
@@ -103,16 +134,14 @@ const CreateDao = ({ className }) => {
 
         setFormData((prevState) => {
             if (checked) {
-                // If checkbox is checked, add to array
                 return {
                     ...prevState,
-                    feautures: [...prevState.feautures, value],
+                    features: [...prevState.features, value],
                 };
             } else {
-                // If checkbox is unchecked, remove from array
                 return {
                     ...prevState,
-                    feautures: prevState.feautures.filter(
+                    features: prevState.features.filter(
                         (item) => item !== value
                     ),
                 };
@@ -121,19 +150,26 @@ const CreateDao = ({ className }) => {
     };
 
     const [inputFields, setInputFields] = useState([
-        { email: "", role: "Creator", share: "" },
+        {
+            member: [
+                { email: user_creator.data.email, role: "Creator", share: "" },
+            ],
+        },
     ]);
 
     const addFields = () => {
         let newfield = { email: "", role: "ShareHolder", share: "" };
-        setInputFields([...inputFields, newfield]);
+        setInputFields((prevState) => [...prevState, { member: [newfield] }]);
     };
+
     const removeFields = (index) => {
         let data = [...inputFields];
         data.splice(index, 1);
         setInputFields(data);
     };
+    const [visibleModal, setVisibleModal] = useState(false);
     const [files, setFiles] = useState([]);
+    const [fileUrl, setfileUrl] = useState([]);
     //Render
     return (
         <Page>
@@ -169,7 +205,6 @@ const CreateDao = ({ className }) => {
                                 tooltip="Maximum 100 characters."
                             />
                         </div>
-
                         <TextArea
                             name="describe"
                             defaultValue={formData.describe}
@@ -179,14 +214,11 @@ const CreateDao = ({ className }) => {
                         />
                     </Card>
                     <Card title="Document" classTitle="title-yellow">
-                        <FilePond
+                        <FileUpload
                             files={files}
-                            onupdatefiles={setFiles}
-                            allowMultiple={true}
-                            maxFiles={3}
-                            server="/api"
-                            name="files" /* sets the file input name, it's filepond by default */
-                            labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
+                            setFiles={setFiles}
+                            fileUrl={fileUrl}
+                            setfileUrl={setfileUrl}
                         />
                     </Card>
                     <Card
@@ -195,66 +227,41 @@ const CreateDao = ({ className }) => {
                     >
                         <div className="flex flex-col gap-3">
                             {inputFields.map((input, index) => {
+                                const { button_trash, button_lock } =
+                                    renderButtons(index);
                                 return (
-                                    <div className="flex gap-2" key={index}>
-                                        <TextInput
-                                            className={"w-full"}
-                                            name="email"
-                                            placeholder="Email"
-                                            value={input.email}
-                                            onChange={(event) =>
-                                                handleFormChange(index, event)
-                                            }
-                                        />
-                                        <Dropdown
-                                            className={"w-36"}
-                                            name="role"
-                                            options={roles}
-                                            tooltip="Maximum 100 characters. No HTML or emoji allowed"
-                                            value={input.role}
-                                            setValue={(event) =>
-                                                handleDropdownChange(
-                                                    index,
-                                                    event
-                                                )
-                                            }
-                                        />
-                                        <TextInput
-                                            name="share"
-                                            placeholder="Share"
-                                            value={input.share}
-                                            onChange={(event) =>
-                                                handleFormChange(index, event)
-                                            }
-                                        />
-
-                                        <button
-                                            className="button-square-stroke"
-                                            onClick={() => removeFields(index)}
-                                        >
-                                            <Icon
-                                                name="trash"
-                                                size="20"
-                                                fill="white"
-                                            ></Icon>
-                                        </button>
-                                    </div>
+                                    <MemberField
+                                        key={index}
+                                        index={index}
+                                        handleFormChange={handleFormChange}
+                                        handleDropdownChange={
+                                            handleDropdownChange
+                                        }
+                                        input={input.member[0]}
+                                        setVisibleModal={setVisibleModal}
+                                        setSelectedEmailIndex={
+                                            setSelectedEmailIndex
+                                        }
+                                        removeFields={removeFields} // pass the function down as a prop
+                                    />
                                 );
                             })}
+
                             <button
+                                type="button"
                                 className="button w-max"
                                 onClick={addFields}
                             >
-                                Add More +{" "}
+                                Add More +
                             </button>
                         </div>
                     </Card>
                     <Card title="Dao Feauters" classTitle="title-blue">
                         <div className="grid-cols-2  gap-4 md:grid-cols-4 grid grid-flow-row">
-                            {feautures.map((e) => (
+                            {features.map((e) => (
                                 <Checkbox
                                     key={e}
-                                    name={"feautures"}
+                                    name={"features"}
                                     onChange={handleCheckboxChange} // Use the new handler here
                                     value={e}
                                     content={e}
@@ -267,9 +274,28 @@ const CreateDao = ({ className }) => {
                     </Card>
                 </form>
             </main>
+            <MemberModal
+                inputFields={inputFields}
+                visible={visibleModal}
+                onClose={() => setVisibleModal(false)}
+                setVisibleModal={setVisibleModal}
+                setSelectedEmailIndex={setSelectedEmailIndex}
+                onUserSelect={(user) => {
+                    if (
+                        selectedEmailIndex !== null &&
+                        inputFields[selectedEmailIndex] &&
+                        inputFields[selectedEmailIndex].member
+                    ) {
+                        const values = [...inputFields];
+                        values[selectedEmailIndex].member[0].email = user.email;
+                        setInputFields(values);
+                        setVisibleModal(false);
+                        setSelectedEmailIndex(null);
+                    }
+                }}
+            />
         </Page>
     );
-    2;
 };
 
 export default CreateDao;

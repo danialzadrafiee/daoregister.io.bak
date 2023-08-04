@@ -43,7 +43,7 @@ const TextArea = ({
             )}
             <div className={styles.wrap}>
                 <textarea
-                    className={cn(classInput, styles.input, "!h-32 !p-4")}
+                    className={cn(classInput, styles.input, "h-32 !p-4")}
                     {...props}
                 >
                     {value}

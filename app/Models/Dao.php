@@ -7,5 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dao extends Model
 {
-    use HasFactory;
+    public function features()
+    {
+        return $this->belongsToMany(Feature::class);
+    }
+
+    public function members()
+    {
+        return $this->belongsToMany(User::class, 'dao_user')
+            ->withPivot('email', 'role', 'share')
+            ->withTimestamps();
+    }
 }

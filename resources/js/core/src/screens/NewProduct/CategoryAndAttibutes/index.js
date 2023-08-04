@@ -188,7 +188,7 @@ const CategoryAndAttibutes = ({ className }) => {
             maxLength={20}
             autofocus={false}
             allowDeleteFromEmptyInput={true}
-            autocomplete={true}
+            autoComplete={true}
             readOnly={false}
             allowUnique={true}
             allowDragDrop={true}

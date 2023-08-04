@@ -9,7 +9,7 @@ export const progress = () => {
 };
 
 export const getFullName = (user) => {
-    return user.user_type === "individual"
+    return user.user_type === "invidual"
         ? `${user.first_name} ${user.last_name}`
         : user.corp_name;
 };

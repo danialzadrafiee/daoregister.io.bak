@@ -6,22 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('daos', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('symbol');
+            $table->string('describe');
+            $table->json('features');
+            $table->string('fileUrl')->nullable();
+            $table->string('avatar')->nullable();
+            $table->string('nftUri')->nullable();
+            $table->integer('token');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
+        Schema::dropIfExists('dao_user');
         Schema::dropIfExists('daos');
     }
 };

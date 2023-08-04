@@ -73,22 +73,22 @@
     align-items: flex-start
 
 .title
-    margin-right: auto
-
+    line-height: 24px
 .price,
 .empty
-    flex-shrink: 0
-    display: inline-block
-    margin-left: 32px
     padding: 0 8px
     border-radius: 6px
-    line-height: 32px
-    font-weight: 700
+    font-weight: 500
+    line-height: 0
+    display: flex
+    align-items: center
+    font-size: 14px
+    border: 1px solid $s4 !important
 
 .price
-    background: $s4
+    border: $s4
     +dark
-        color: $n7
+        border: $n7
 
 .empty
     background: $n3

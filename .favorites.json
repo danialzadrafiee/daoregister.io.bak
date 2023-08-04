@@ -1,34 +1,34 @@
 [
     {
         "type": "Directory",
-        "name": "/home/dante/developerpie/daoregister.io/resources/js/Pages/Login",
+        "name": "/home/dante/developerpie/daoregister_io/resources/js/Pages",
         "parent_id": null,
-        "workspaceRoot": "/home/dante/developerpie/daoregister.io",
-        "workspacePath": "resources/js/Pages/Login",
-        "id": "wetcqOEj8pMnamd9"
-    },
-    {
-        "type": "Directory",
-        "name": "/home/dante/developerpie/daoregister.io/resources/js/Screens",
-        "parent_id": null,
-        "workspaceRoot": "/home/dante/developerpie/daoregister.io",
-        "workspacePath": "resources/js/Screens",
-        "id": "eDVmPMH5yGlijdsn"
-    },
-    {
-        "type": "Directory",
-        "name": "/home/dante/developerpie/daoregister.io/resources/js/Pages",
-        "parent_id": null,
-        "workspaceRoot": "/home/dante/developerpie/daoregister.io",
+        "workspaceRoot": "/home/dante/developerpie/daoregister_io",
         "workspacePath": "resources/js/Pages",
-        "id": "JSQ4GyCOEDbRxFt0"
+        "id": "vgEYhczMyQZaq48b"
     },
     {
         "type": "Directory",
-        "name": "/home/dante/developerpie/daoregister.io/resources/js/components",
+        "name": "/home/dante/developerpie/daoregister_io/resources/js/components",
         "parent_id": null,
-        "workspaceRoot": "/home/dante/developerpie/daoregister.io",
+        "workspaceRoot": "/home/dante/developerpie/daoregister_io",
         "workspacePath": "resources/js/components",
-        "id": "yF9h2KOcZBAJf8oz"
+        "id": "FsECc5gpynXodlTa"
+    },
+    {
+        "type": "Directory",
+        "name": "/home/dante/developerpie/daoregister_io/resources/js/Screens",
+        "parent_id": null,
+        "workspaceRoot": "/home/dante/developerpie/daoregister_io",
+        "workspacePath": "resources/js/Screens",
+        "id": "3y0vi5trDz6SVGZw"
+    },
+    {
+        "type": "File",
+        "name": "/home/dante/developerpie/daoregister_io/resources/js/utils.jsx",
+        "parent_id": null,
+        "workspaceRoot": "/home/dante/developerpie/daoregister_io",
+        "workspacePath": "resources/js/utils.jsx",
+        "id": "G32MY7rlB0DpaZSo"
     }
 ]

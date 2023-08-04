@@ -1,20 +1,20 @@
 import Card from "@/components/Card";
 import Page from "@/components/Page";
 import DaoCard from "@/components/DaoCard";
-import { products } from "@/mocks/products";
 import styles from "@/Pages/Dao/Index/DaoIndex.module.sass";
-const Dao = () => {
+
+const Dao = ({ daos }) => {
     return (
         <Page>
             <Card>
                 <div className={styles.products}>
-                    {products.map((x, index) => (
+                    {daos.map((dao, index) => (
                         <DaoCard
                             className={`${styles.product} cursor-pointer`}
-                            item={x}
+                            dao={dao}
                             key={index}
                             withoutСheckbox
-                            link={route("dashboard.index")}
+                            link={route("dao.show", [dao.id])}
                         />
                     ))}
                 </div>

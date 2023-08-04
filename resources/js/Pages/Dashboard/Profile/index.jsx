@@ -30,7 +30,7 @@ const Profile = ({ user }) => {
                     </button>
                 </div>
                 <div className={styles.wrap}>
-                    <div className={cn("h4", styles.man)}>
+                    <div className={cn("h4 capitalize", styles.man)}>
                         {getFullName(user)}
                     </div>
                     <div className={cn(styles.info)}>
