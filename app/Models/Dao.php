@@ -18,4 +18,9 @@ class Dao extends Model
             ->withPivot('email', 'role', 'share')
             ->withTimestamps();
     }
+
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class);
+    }
 }

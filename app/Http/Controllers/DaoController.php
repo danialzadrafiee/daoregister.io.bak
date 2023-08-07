@@ -27,7 +27,11 @@ class DaoController extends Controller
     public function dashboard($dao_id)
     {
         $dao = Dao::find($dao_id);
-        $dao->load('members');
+        $dao = Dao::find($dao_id);
+        $dao->load(['members' => function ($query) {
+            $query->withPivot('email', 'role', 'share');
+        }]);
+
         return Inertia::render("Dao/Dashboard/DaoDashboard", ["dao" => $dao]);
     }
 
@@ -64,12 +68,20 @@ class DaoController extends Controller
     }
     public function show($dao_id)
     {
-        $dao = Dao::with('members')->find($dao_id);
+        $dao = Dao::find($dao_id);
+        $dao["contracts"] = $dao->contracts()->select('id', 'name', 'describe')->get();
+        $dao["members"] = $dao->members()->select('users.id', 'users.profile_picture', 'users.email', 'users.first_name', 'users.last_name', 'users.token')->get();
+
 
         if (!$dao) {
             return redirect()->route('dao.index')->with('error', 'DAO not found!');
         }
 
         return Inertia::render('Dao/Show/DaoShow', ['dao' => $dao]);
+    }
+
+    public function get_dao_by_id($dao_id)
+    {
+        return Dao::find($dao_id);
     }
 }

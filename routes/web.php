@@ -21,17 +21,30 @@ Route::get('/fa', function () {
 Route::auto('gateway', 'GatewayController');
 /** @see App\Http\Controllers\GatewayController  **/
 
-Route::auto('dashboard', 'DashboardController');
+
+Route::auto('/dashboard', 'DashboardController', [
+    'middleware' => 'auth',
+]);
+
+
 /** @see App\Http\Controllers\DashboardController  **/
 
-Route::auto('dao', 'DaoController');
+Route::auto('dao', 'DaoController', [
+    'middleware' => 'auth',
+]);
 /** @see App\Http\Controllers\DaoController  **/
 
-Route::auto('user', 'UserController');
+Route::auto('user', 'UserController', [
+    'middleware' => 'auth',
+]);
 /** @see App\Http\Controllers\UserController  **/
 
-Route::auto('upload', 'UploadController');
+Route::auto('upload', 'UploadController', [
+    'middleware' => 'auth',
+]);
 /** @see App\Http\Controllers\UploadController  **/
 
-Route::auto('contract', 'ContractController');
+Route::auto('contract', 'ContractController', [
+    'middleware' => 'auth',
+]);
 /** @see App\Http\Controllers\ContractController  **/

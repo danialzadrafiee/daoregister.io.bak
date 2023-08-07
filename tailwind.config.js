@@ -67,5 +67,5 @@ export default {
     corePlugins: {
         preflight: false
     },
-    plugins: [forms],
+    plugins: [forms, require('@tailwindcss/typography'),],
 };

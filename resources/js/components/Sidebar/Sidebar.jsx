@@ -6,7 +6,9 @@ import Theme from "../Theme";
 import Dropdown from "./Dropdown";
 import Help from "./Help";
 import Image from "../Image";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
+import { EthereumClient } from "@web3modal/ethereum";
+import { disconnect } from "@wagmi/core";
 const navigation = [
     {
         title: "Dashboard",
@@ -80,7 +82,10 @@ const navigation = [
 const Sidebar = ({ className, onClose }) => {
     const [visibleHelp, setVisibleHelp] = useState(false);
     const [visible, setVisible] = useState(false);
-
+    const handleLogout = async () => {
+        await disconnect();
+        router.post(route("gateway.logout"));
+    };
     return (
         <>
             <div
@@ -133,22 +138,16 @@ const Sidebar = ({ className, onClose }) => {
                     <Icon name="close" size="24" />
                 </button>
                 <div className={styles.foot}>
-                    <button
-                        className={styles.link}
-                        onClick={() => setVisibleHelp(true)}
+                    <div
+                        onClick={handleLogout}
+                        className="flex items-center gap-3 font-semibold text-white opacity-70 hover:opacity-100 cursor-pointer"
                     >
-                        <Icon name="help" size="24" />
-                        Help & getting started
-                        <div className={styles.counter}>8</div>
-                    </button>
-                    {/* <Theme className={styles.theme} visibleSidebar={visible} /> */}
+                        <Icon name={"activity"} size="24" fill="#ffffff" />
+                        Logout
+                    </div>
                 </div>
             </div>
-            <Help
-                visible={visibleHelp}
-                setVisible={setVisibleHelp}
-                onClose={onClose}
-            />
+
             <div
                 className={cn(styles.overlay, { [styles.active]: visible })}
                 onClick={() => setVisible(false)}

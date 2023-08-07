@@ -21,6 +21,7 @@ const Shareholders = ({ dao }) => {
                     <tbody>
                         {dao.members.map((member, index) => (
                             <tr
+                            key={index}
                                 className={`${
                                     index != dao.members.length - 1 &&
                                     "border-b"

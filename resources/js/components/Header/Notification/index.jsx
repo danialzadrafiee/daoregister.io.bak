@@ -42,12 +42,12 @@ const Notification = ({ className }) => {
         <div className={styles.body}>
           <div className={styles.top}>
             <div className={styles.title}>Notification</div>
-            <Actions
+            {/* <Actions
               className={styles.actions}
               classActionsHead={styles.actionsHead}
               items={actions}
               small
-            />
+            /> */}
           </div>
           <div className={styles.list}>
             {notifications.map((x, index) => (

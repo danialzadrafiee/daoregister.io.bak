@@ -7,5 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contract extends Model
 {
-    use HasFactory;
+    public function dao()
+    {
+        return $this->belongsTo(Dao::class);
+    }
+    public function members()
+    {
+        return $this->belongsToMany(User::class)->withPivot('role');
+    }
 }

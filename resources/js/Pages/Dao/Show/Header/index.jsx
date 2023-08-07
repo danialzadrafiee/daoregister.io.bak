@@ -48,7 +48,7 @@ const Header = ({ dao }) => {
     ];
     return (
         <div className="grid gap-4 grid-cols-2">
-            <Card className={"flex flex-col"} >
+            <Card className={"flex flex-col"}>
                 <header className="flex flex-col">
                     <figure className="p-4 w-full">
                         <div className="flex z-10 ">
@@ -109,6 +109,7 @@ const Header = ({ dao }) => {
                     </Card>
                 ))}
             </aside>
+            <div className="TAILWINDCSS_FIX hidden lg:col-span-1"></div>
         </div>
     );
 };

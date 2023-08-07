@@ -11,13 +11,16 @@ import TextInput from "@/components/TextInput";
 import TextArea from "@/components/TextArea";
 import Icon from "@/components/Icon";
 import Checkbox from "@/components/Checkbox";
-import MemberField from "./MemberField/MemberField";
-import MemberModal from "./MemberModal";
-import FileUpload from "./FileUpload";
+import MemberModal from "@/components/MemberModal";
+import FileUpload from "@/components/FileUpload";
+import Members from "./Members/Members";
 
 // Utils & Styles
 import cn from "classnames";
 import "./DaoCreate.scss";
+
+const features = ["Contracts", "Automation", "Shop", "Letters"];
+const user_creator = await axios.get(route("user.get_user_by_auth"));
 
 const schema = Joi.object({
     name: Joi.string().alphanum().min(3).max(100).required(),
@@ -31,60 +34,48 @@ const schema = Joi.object({
                     .email({ tlds: { allow: false } })
                     .required(),
                 role: Joi.string().required(),
-                share: Joi.number().allow(""), // Assuming share can be an empty string
+                share: Joi.number().allow(""),
             })
         )
         .required()
         .min(2),
-    fileUrl: Joi.string().uri(), // Assuming fileUrl contains URIs
+    fileUrl: Joi.string().uri(),
 });
 
-const transformData = (fields) => {
-    let members = [];
-
-    fields.forEach((field) => {
-        members.push(field.member[0]);
-    });
-
-    return { members };
-};
-
-const features = ["Contracts", "Automation", "Shop", "Letters"];
-const user_creator = await axios.get(route("user.get_user_by_auth"));
-
-//Main function
-const CreateDao = ({ className, user }) => {
-    const [selectedEmailIndex, setSelectedEmailIndex] = useState(null);
-
-    const renderButtons = (index) => {
-        const button_trash = (
-            <button
-                className="button-square-stroke"
-                onClick={() => removeFields(index)}
-            >
-                <Icon name="trash" size="20" fill="white" />
-            </button>
-        );
-
-        const button_lock = (
-            <button
-                disabled
-                className="button-square-stroke disabled"
-                onClick={() => removeFields(index)}
-            >
-                <Icon name="lock" size="20" fill="white" />
-            </button>
-        );
-
-        return { button_trash, button_lock };
-    };
-
+// Main function
+const DaoCreate = ({ className, user }) => {
+    // State declarations
+    const [inputFields, setInputFields] = useState([
+        { email: user_creator.data.email, role: "Creator", share: "" },
+    ]);
     const [formData, setFormData] = useState({
         name: "",
         symbol: "",
         describe: "",
         features: [],
     });
+    const roles = [
+        "Creator",
+        "Founder",
+        "ShareHolder",
+        "Teammate",
+        "Member",
+        "Employee",
+        "Observer",
+    ];
+    const [visibleModal, setVisibleModal] = useState(false);
+    const [files, setFiles] = useState([]);
+    const [fileUrl, setfileUrl] = useState([]);
+    const [selectedEmailIndex, setSelectedEmailIndex] = useState(null);
+
+    // Event handlers
+    const handleUserSelect = (user, index) => {
+        const values = [...inputFields];
+        values[index].email = user.email;
+        setInputFields(values);
+        setVisibleModal(false);
+        setSelectedEmailIndex(null);
+    };
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevState) => ({
@@ -92,11 +83,10 @@ const CreateDao = ({ className, user }) => {
             [name]: value,
         }));
     };
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        const { members } = transformData(inputFields);
-        const dataToSend = { ...formData, members, fileUrl };
+        const dataToSend = { ...formData, members: inputFields, fileUrl };
+        console.log(dataToSend);
         console.log(schema.validate(dataToSend));
         router.post(
             route("dao.store", dataToSend, {
@@ -109,29 +99,8 @@ const CreateDao = ({ className, user }) => {
             })
         );
     };
-
-    const handleDropdownChange = (index, value) => {
-        const values = [...inputFields];
-        values[index].role = value;
-        setInputFields(values);
-    };
-
-    const handleFormChange = (index, event) => {
-        const values = [...inputFields];
-        const { name, value } = event.target;
-
-        if (name === "share") {
-            values[index].member[0][name] = value; // Update the share property inside the member object
-        } else {
-            values[index][name] = value;
-        }
-
-        setInputFields(values);
-    };
-
     const handleCheckboxChange = (e) => {
         const { value, checked } = e.target;
-
         setFormData((prevState) => {
             if (checked) {
                 return {
@@ -149,27 +118,10 @@ const CreateDao = ({ className, user }) => {
         });
     };
 
-    const [inputFields, setInputFields] = useState([
-        {
-            member: [
-                { email: user_creator.data.email, role: "Creator", share: "" },
-            ],
-        },
-    ]);
-
-    const addFields = () => {
-        let newfield = { email: "", role: "ShareHolder", share: "" };
-        setInputFields((prevState) => [...prevState, { member: [newfield] }]);
+    const handleEmailClick = (index) => {
+        setSelectedEmailIndex(index);
+        setVisibleModal(true);
     };
-
-    const removeFields = (index) => {
-        let data = [...inputFields];
-        data.splice(index, 1);
-        setInputFields(data);
-    };
-    const [visibleModal, setVisibleModal] = useState(false);
-    const [files, setFiles] = useState([]);
-    const [fileUrl, setfileUrl] = useState([]);
     //Render
     return (
         <Page>
@@ -215,6 +167,7 @@ const CreateDao = ({ className, user }) => {
                     </Card>
                     <Card title="Document" classTitle="title-yellow">
                         <FileUpload
+                            folder="dao"
                             files={files}
                             setFiles={setFiles}
                             fileUrl={fileUrl}
@@ -225,36 +178,12 @@ const CreateDao = ({ className, user }) => {
                         title="Members & Share holders"
                         classTitle="title-purple"
                     >
-                        <div className="flex flex-col gap-3">
-                            {inputFields.map((input, index) => {
-                                const { button_trash, button_lock } =
-                                    renderButtons(index);
-                                return (
-                                    <MemberField
-                                        key={index}
-                                        index={index}
-                                        handleFormChange={handleFormChange}
-                                        handleDropdownChange={
-                                            handleDropdownChange
-                                        }
-                                        input={input.member[0]}
-                                        setVisibleModal={setVisibleModal}
-                                        setSelectedEmailIndex={
-                                            setSelectedEmailIndex
-                                        }
-                                        removeFields={removeFields} // pass the function down as a prop
-                                    />
-                                );
-                            })}
-
-                            <button
-                                type="button"
-                                className="button w-max"
-                                onClick={addFields}
-                            >
-                                Add More +
-                            </button>
-                        </div>
+                        <Members
+                            roles={roles}
+                            onEmailClick={handleEmailClick}
+                            inputFields={inputFields}
+                            setInputFields={setInputFields}
+                        />
                     </Card>
                     <Card title="Dao Feauters" classTitle="title-blue">
                         <div className="grid-cols-2  gap-4 md:grid-cols-4 grid grid-flow-row">
@@ -276,26 +205,15 @@ const CreateDao = ({ className, user }) => {
             </main>
             <MemberModal
                 inputFields={inputFields}
+                selectedEmailIndex={selectedEmailIndex}
                 visible={visibleModal}
                 onClose={() => setVisibleModal(false)}
                 setVisibleModal={setVisibleModal}
                 setSelectedEmailIndex={setSelectedEmailIndex}
-                onUserSelect={(user) => {
-                    if (
-                        selectedEmailIndex !== null &&
-                        inputFields[selectedEmailIndex] &&
-                        inputFields[selectedEmailIndex].member
-                    ) {
-                        const values = [...inputFields];
-                        values[selectedEmailIndex].member[0].email = user.email;
-                        setInputFields(values);
-                        setVisibleModal(false);
-                        setSelectedEmailIndex(null);
-                    }
-                }}
+                onUserSelect={handleUserSelect}
             />
         </Page>
     );
 };
 
-export default CreateDao;
+export default DaoCreate;

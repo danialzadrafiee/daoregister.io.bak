@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('dao_id')->constrained()->onDelete('cascade');
+            $table->integer('token');
+            $table->string('name');
+            $table->text('describe');
+            $table->string('signatureType');
+            $table->json('contract');
+            $table->string('nftUri')->nullable();
+            $table->string('fileUrl')->nullable();
             $table->timestamps();
         });
     }

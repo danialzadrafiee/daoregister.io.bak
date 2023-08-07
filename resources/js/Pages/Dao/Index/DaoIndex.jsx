@@ -6,7 +6,11 @@ import styles from "@/Pages/Dao/Index/DaoIndex.module.sass";
 const Dao = ({ daos }) => {
     return (
         <Page>
-            <Card>
+            <Card
+                head={<div>{daos.length} Oragnizations</div>}
+                title={"Oragnization Explorer"}
+                classTitle={"title-blue"}
+            >
                 <div className={styles.products}>
                     {daos.map((dao, index) => (
                         <DaoCard

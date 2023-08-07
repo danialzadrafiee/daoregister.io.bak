@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from '@inertiajs/react';
+import { Link } from "@inertiajs/react";
 import cn from "classnames";
 import OutsideClickHandler from "react-outside-click-handler";
 import styles from "./Messages.module.sass";
@@ -80,12 +80,12 @@ const Messages = ({ className }) => {
                 <div className={styles.body}>
                     <div className={styles.top}>
                         <div className={styles.title}>Message</div>
-                        <Actions
+                        {/* <Actions
                             className={styles.actions}
                             classActionsHead={styles.actionsHead}
                             items={actions}
                             small
-                        />
+                        /> */}
                     </div>
                     <div className={styles.list}>
                         {messages.map((x, index) => (

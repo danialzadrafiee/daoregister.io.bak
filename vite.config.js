@@ -14,5 +14,8 @@ export default defineConfig({
         global: 'window'
     },
     optimizeDeps: {
+    },
+    build: {
+        target: 'esnext',
     }
 });

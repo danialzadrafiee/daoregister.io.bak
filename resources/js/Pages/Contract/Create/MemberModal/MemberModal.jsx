@@ -28,7 +28,7 @@ const MemberModal = ({ visible, onClose, onUserSelect, inputFields }) => {
     return (
         <Modal className="container" onClose={onClose} visible={visible}>
             <Card>
-                <header className="w-[900px] border-b  mb-8 flex items-center justify-between">
+                <header className="w-[900px]  mb-8 flex items-center justify-between">
                     <h3 className="text-lg font-semibold">Select Member</h3>
                     <div className="flex gap-2 items-center">
                         <TextInput
@@ -36,7 +36,11 @@ const MemberModal = ({ visible, onClose, onUserSelect, inputFields }) => {
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                        <button className="button" type="button" onClick={handleSearch}>
+                        <button
+                            className="button"
+                            type="button"
+                            onClick={handleSearch}
+                        >
                             Search
                         </button>
                     </div>
@@ -59,16 +63,26 @@ const MemberModal = ({ visible, onClose, onUserSelect, inputFields }) => {
                                     onClick={() => onUserSelect(user)}
                                     className="grid cursor-pointer items-center grid-cols-9 hover:bg-white/10 p-4 rounded-xl"
                                 >
-                                    <div className="col-span-1 font-light">{user.id}</div>
                                     <div className="col-span-1 font-light">
-                                        <img src={user.profile_picture} className="h-12 rounded-full" />
+                                        {user.id}
                                     </div>
-                                    <div className="col-span-2 font-light">{getFullName(user)}</div>
-                                    <div className="col-span-2 font-light">{user.email}</div>
+                                    <div className="col-span-1 font-light">
+                                        <img
+                                            src={user.profile_picture}
+                                            className="h-12 rounded-full"
+                                        />
+                                    </div>
+                                    <div className="col-span-2 font-light">
+                                        {getFullName(user)}
+                                    </div>
+                                    <div className="col-span-2 font-light">
+                                        {user.email}
+                                    </div>
                                     <div className="col-span-3 font-light">
                                         {user.cv
                                             ? user.cv.length > 30
-                                                ? user.cv.substring(0, 30) + "..."
+                                                ? user.cv.substring(0, 30) +
+                                                  "..."
                                                 : user.cv
                                             : "..."}
                                     </div>

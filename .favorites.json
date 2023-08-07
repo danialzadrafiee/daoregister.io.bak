@@ -30,5 +30,13 @@
         "workspaceRoot": "/home/dante/developerpie/daoregister_io",
         "workspacePath": "resources/js/utils.jsx",
         "id": "G32MY7rlB0DpaZSo"
+    },
+    {
+        "type": "Directory",
+        "name": "/home/dante/developerpie/daoregister_io/core",
+        "parent_id": null,
+        "workspaceRoot": "/home/dante/developerpie/daoregister_io",
+        "workspacePath": "core",
+        "id": "5GH8w6jWebTv9oBu"
     }
 ]

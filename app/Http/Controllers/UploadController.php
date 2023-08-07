@@ -12,10 +12,9 @@ class UploadController extends Controller
         if ($request->hasFile('files')) {
             $file = $request->file('files');
             $filename = $file->getClientOriginalName();
-            $path = public_path('uploads/dao/');
+            $path = public_path("uploads/{$request->folder}/");
             $file->move($path, $filename);
-
-            $fileUrl = asset('uploads/dao/' . $filename);
+            $fileUrl = asset("uploads/{$request->folder}/" . $filename);
             return response()->json(['success' => true, 'fileUrl' => $fileUrl]);
         }
 

@@ -9,9 +9,9 @@ use Inertia\Inertia;
 
 class GatewayController extends Controller
 {
-    public function index()
+    public function index($error = null)
     {
-        return Inertia::render('Login/Login');
+        return Inertia::render('Login/Login', ["error" => $error]);
     }
 
     public function login($wallet)
@@ -19,10 +19,19 @@ class GatewayController extends Controller
 
         $user = User::where('wallet', $wallet)->first();
         if ($user) {
-            Auth::login($user);
-            return to_route('dashboard.index');
+            if ($user->user_type == "invidual") {
+                Auth::login($user);
+                return to_route('dashboard.index');
+            } else {
+                return to_route('gateway.index', ['error' => 'This version only support invidual users']);
+            }
         } else {
             return 'false';
         }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
     }
 }

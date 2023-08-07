@@ -80,4 +80,9 @@ class User extends Authenticatable
             ->withPivot('email', 'role', 'share')
             ->withTimestamps();
     }
+
+    public function contracts()
+    {
+        return $this->belongsToMany(Contract::class)->withPivot('role');
+    }
 }

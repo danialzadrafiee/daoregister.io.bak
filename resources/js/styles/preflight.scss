@@ -361,3 +361,26 @@ video {
 [hidden] {
     display: none;
 }
+
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #ffffff1e;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #ffffff4f;
+    border-radius: 20px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #d6d6d6;
+}
