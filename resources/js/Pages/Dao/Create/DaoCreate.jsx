@@ -23,8 +23,8 @@ const features = ["Contracts", "Automation", "Shop", "Letters"];
 const user_creator = await axios.get(route("user.get_user_by_auth"));
 
 const schema = Joi.object({
-    name: Joi.string().alphanum().min(3).max(100).required(),
-    symbol: Joi.string().alphanum().min(2).max(100).required(),
+    name: Joi.string().min(3).max(100).required(),
+    symbol: Joi.string().min(2).max(100).required(),
     describe: Joi.string().min(5).max(320).required(),
     features: Joi.array().min(1),
     members: Joi.array()
