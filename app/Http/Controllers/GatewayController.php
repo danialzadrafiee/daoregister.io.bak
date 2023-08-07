@@ -26,7 +26,7 @@ class GatewayController extends Controller
                 return to_route('gateway.index', ['error' => 'This version only support invidual users']);
             }
         } else {
-            return 'false';
+            return "This wallet has no Bnic.io account please check <a href='https://bnic.io'>Bnic.io</a>";
         }
     }
 
