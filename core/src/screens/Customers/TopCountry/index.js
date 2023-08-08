@@ -40,7 +40,7 @@ const data = [
 ];
 
 const TopCountry = ({ className }) => {
-    const darkMode = useDarkMode(false);
+    const darkMode = useDarkMode(true);
 
     return (
         <Card

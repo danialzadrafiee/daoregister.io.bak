@@ -68,7 +68,7 @@ const data = [
 ];
 
 const ActiveCustomers = ({ className }) => {
-  const darkMode = useDarkMode(false);
+  const darkMode = useDarkMode(true);
   const [sorting, setSorting] = useState(intervals[0]);
 
   return (

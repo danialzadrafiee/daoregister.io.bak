@@ -28,7 +28,7 @@ const Settings = () => {
   const [rating, setRating] = useState(optionsRating[3]);
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [values, setValues] = useState([32, 80]);
-  const darkMode = useDarkMode(false);
+  const darkMode = useDarkMode(true);
 
   const handleSubmit = (e) => {
     alert();

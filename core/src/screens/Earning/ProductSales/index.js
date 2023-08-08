@@ -48,7 +48,7 @@ const data = [
 ];
 
 const ProductSales = ({ className }) => {
-  const darkMode = useDarkMode(false);
+  const darkMode = useDarkMode(true);
   const [sorting, setSorting] = useState(intervals[0]);
 
   return (

@@ -44,7 +44,7 @@ const data = [
 ];
 
 const Chart = () => {
-    const darkMode = useDarkMode(false);
+    const darkMode = useDarkMode(true);
     return (
         <div className={styles.chart}>
             <ResponsiveContainer width="100%" height="100%">
