@@ -5,8 +5,6 @@ import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
-import useDarkMode from "@oceanprotocol/use-dark-mode";
-const darkMode = useDarkMode(true);
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) =>

@@ -6,7 +6,7 @@ import Dropdown from "../../../components/Dropdown";
 import Checkbox from "../../../components/Checkbox";
 import Icon from "../../../components/Icon";
 import { Range, getTrackBackground } from "react-range";
-import useDarkMode from "use-dark-mode";
+import useDarkMode from "@fisch0920/use-dark-mode";
 
 const options = ["Featured", "Popular", "New"];
 const optionsRating = ["1 and up", "2 and up", "3 and up", "4 and up", "5"];

@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
             'skill' => '["TA","PHP"]',
             'updated_at' => '2023-05-28 10:33:00',
             'user_type' => 'invidual',
-            'wallet' => '0x9e5d516b80f94C55fc8061d9cacCfA98b585c8ee',
+            'wallet' => '0x2835D509d120490807508e498DD06c0eEFbc6597',
             'website' => 'https://www.jamofasyfa.mobi',
             'profile_picture' => "https://api.dicebear.com/6.x/identicon/svg?seed=danialzadrafiee&backgroundType=solid,gradientLinear&backgroundColor=cbe5fe&rowColor=0084ff",
             "token" => ++$usertoken,

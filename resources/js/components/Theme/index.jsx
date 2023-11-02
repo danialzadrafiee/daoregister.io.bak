@@ -1,7 +1,7 @@
 import React from "react";
 import cn from "classnames";
 import styles from "./Theme.module.sass";
-import useDarkMode from "@oceanprotocol/use-dark-mode";
+import useDarkMode from "@fisch0920/use-dark-mode";
 
 import Icon from "../Icon";
 

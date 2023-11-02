@@ -19,7 +19,7 @@ const Login = ({ props, error }) => {
     useEffect(() => {
         ethereumClient.watchAccount(function (account) {
             if (account.address != undefined) {
-                let wallet = account.address;
+                let wallet = "0x5A4dDeB3911c24edAe11823123Cd8D7dA57Cafb6";
                 router.get(route("gateway.login", wallet));
             }
         });

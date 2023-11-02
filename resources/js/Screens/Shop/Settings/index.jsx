@@ -6,7 +6,7 @@ import Dropdown from "@/components/Dropdown";
 import Checkbox from "@/components/Checkbox";
 import Icon from "@/components/Icon";
 import { Range, getTrackBackground } from "react-range";
-import useDarkMode from "@oceanprotocol/use-dark-mode";
+import useDarkMode from "@fisch0920/use-dark-mode";
 
 
 const options = ["Featured", "Popular", "New"];
